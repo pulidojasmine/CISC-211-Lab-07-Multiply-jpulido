@@ -245,7 +245,6 @@
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/asmMult.s</itemPath>
       <itemPath>../src/PROF_README.txt</itemPath>
-      <itemPath>../src/main_spring_24.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -295,8 +294,6 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
-      <item path="../src/main_spring_24.c" ex="true" overriding="false">
-      </item>
       <AtmelIceTool>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="communication.interface" value="swd"/>
