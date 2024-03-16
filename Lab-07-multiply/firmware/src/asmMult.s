@@ -9,6 +9,17 @@
 .align
  
 /* define and initialize global variables that C can access */
+/* create a string */
+.global nameStr
+.type nameStr,%gnu_unique_object
+    
+/*** STUDENTS: Change the next line to your name!  **/
+nameStr: .asciz "Inigo Montoya"  
+ 
+/* initialize a global variable that C can access to print the nameStr */
+.global nameStrPtr
+.type nameStrPtr,%gnu_unique_object
+nameStrPtr: .word nameStr   /* Assign the mem loc of nameStr to nameStrPtr */
 
 .global a_Multiplicand,b_Multiplier,rng_Error,a_Sign,b_Sign,prod_Is_Neg,a_Abs,b_Abs,init_Product,final_Product
 .type a_Multiplicand,%gnu_unique_object

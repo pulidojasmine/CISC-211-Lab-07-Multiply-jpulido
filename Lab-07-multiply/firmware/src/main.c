@@ -84,7 +84,7 @@ static int32_t tc[][2] = {
 };
 
 static char * pass = "PASS";
-static char * fail = "FAIL";
+static char * fail = "FAIL *****";
 
 // VB COMMENT:
 // The ARM calling convention permits the use of up to 4 registers, r0-r3
@@ -99,6 +99,7 @@ static char * fail = "FAIL";
 // The result of their product is returned.
 extern int32_t asmMult(int32_t multiplicand, int32_t multiplier);
 
+extern uint32_t nameStrPtr;
 
 extern int32_t a_Multiplicand;
 extern int32_t b_Multiplier;
@@ -208,17 +209,17 @@ static int testResult(int testNum,
     // So I'm setting it up this way so it'll work for future labs, too --VB
     *failCount = 0;
     *passCount = 0;
-    char *aCheck = "OOPS";
-    char *bCheck = "OOPS";
-    char *rngCheck = "OOPS";
-    char *aSignCheck = "OOPS";
-    char *bSignCheck = "OOPS";
-    char *prodSignCheck = "OOPS";
-    char *aAbsCheck = "OOPS";
-    char *bAbsCheck = "OOPS";
-    char *initProdCheck = "OOPS";
-    char *finalProdCheck = "OOPS";
-    char *resultCheck = "OOPS";
+    char *aCheck = "OOPS!!!!!";
+    char *bCheck = "OOPS!!!!!";
+    char *rngCheck = "OOPS!!!!!";
+    char *aSignCheck = "OOPS!!!!!";
+    char *bSignCheck = "OOPS!!!!!";
+    char *prodSignCheck = "OOPS!!!!!";
+    char *aAbsCheck = "OOPS!!!!!";
+    char *bAbsCheck = "OOPS!!!!!";
+    char *initProdCheck = "OOPS!!!!!";
+    char *finalProdCheck = "OOPS!!!!!";
+    char *resultCheck = "OOPS!!!!!";
     static bool firstTime = true;
     int32_t myA = tc[testNum][0];
     int32_t myB = tc[testNum][1];
@@ -407,6 +408,14 @@ int main ( void )
             // set the input values 
             int32_t a = tc[testCase][0];  // multiplicand
             int32_t b = tc[testCase][1];  // multiplier
+            
+            // to break at a specific test case, change the number in the
+            // if statement. Then set a breakpoint on the line inside the
+            // if statement.
+            if (testCase == 50)
+            {
+                LED0_Toggle();   
+            }
 
             // !!!! THIS IS WHERE YOUR ASSEMBLY LANGUAGE PROGRAM GETS CALLED!!!!
             // Call our assembly function defined in file asmMult.s
@@ -455,10 +464,11 @@ int main ( void )
             isRTCExpired = false;
             isUSARTTxComplete = false;
             snprintf((char*)uartTxBuffer, MAX_PRINT_LEN,
-                    "========= NEW TESTS COMPLETE: Post-test Idle Cycle Number: %ld\r\n"
+                    "========= %s: Lab 7 Multiply: ALL TESTS COMPLETE: Post-test Idle Cycle Number: %ld\r\n"
                     "Summary of tests: %ld of %ld tests passed; score: %ld/20 pts\r\n"
                     "\r\n",
-                    idleCount, totalPassCount, totalTests,
+                    (char *) nameStrPtr, idleCount, 
+                    totalPassCount, totalTests,
                     20*totalPassCount/totalTests); 
 
 #if USING_HW 
