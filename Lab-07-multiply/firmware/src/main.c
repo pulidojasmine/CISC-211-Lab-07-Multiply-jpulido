@@ -40,6 +40,7 @@
 #include <malloc.h>
 #include <inttypes.h>   // required to print out pointers using PRIXPTR macro
 #include "definitions.h"                // SYS function prototypes
+#include "asmExterns.h"
 
 /* RTC Time period match values for input clock of 1 KHz */
 #define PERIOD_50MS                             51
@@ -48,7 +49,7 @@
 #define PERIOD_2S                               2048
 #define PERIOD_4S                               4096
 
-#define MAX_PRINT_LEN 1000
+#define MAX_PRINT_LEN 2000
 
 static volatile bool isRTCExpired = false;
 static volatile bool changeTempSamplingRate = false;
@@ -98,19 +99,6 @@ static char * fail = "FAIL *****";
 // Both inputs are signed, and limited to the range [-2^15,(2^15) - 1]
 // The result of their product is returned.
 extern int32_t asmMult(int32_t multiplicand, int32_t multiplier);
-
-extern uint32_t nameStrPtr;
-
-extern int32_t a_Multiplicand;
-extern int32_t b_Multiplier;
-extern int32_t rng_Error;
-extern int32_t a_Sign;
-extern int32_t b_Sign;
-extern int32_t prod_Is_Neg;
-extern int32_t a_Abs;
-extern int32_t b_Abs;
-extern int32_t init_Product;
-extern int32_t final_Product;
 
 
 // set this to 0 if using the simulator. BUT note that the simulator
@@ -381,6 +369,10 @@ int main ( void )
 #endif //SIMULATOR
     
     printGlobalAddresses();
+    
+    // initialize the values used by the assembly code so that they are
+    // not just random
+    asmExternsInit();
 
     // initialize all the variables
     int32_t passCount = 0;
