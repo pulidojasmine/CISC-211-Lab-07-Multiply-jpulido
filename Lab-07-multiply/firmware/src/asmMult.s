@@ -14,7 +14,7 @@
 .type nameStr,%gnu_unique_object
     
 /*** STUDENTS: Change the next line to your name!  **/
-nameStr: .asciz "Inigo Montoya"  
+nameStr: .asciz "Jasmine Pulido"  
  
 /* initialize a global variable that C can access to print the nameStr */
 .global nameStrPtr
@@ -87,6 +87,140 @@ asmMult:
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
     
+    MOV R5, 0
+    
+    
+    
+    LDR R4, =b_Sign
+    STR R5, [R4]
+    
+    LDR R6, =prod_Is_Neg
+    STR R5, [R6]
+    
+    LDR R7, =a_Abs
+    STR R5, [R7]
+    
+    LDR R3, =b_Abs
+    STR R5, [R3]
+    
+    LDR R4, =init_Product
+    STR R5, [R4]
+    
+    LDR R3, =final_Product
+    STR R5, [R3]
+    
+    LDR R3, =a_Sign
+    STR R5, [R3]
+    
+    LDR R2, =rng_Error
+    STR R5, [R2]
+    
+    /* copy what's in r0 and r1 into multi-d and multi-r */
+    
+    LDR R0, =a_Multiplicand
+    STR R0, [R0]
+    
+    LDR R1, =b_Multiplier
+    STR R1, [R1]
+    
+    /* seeing if multiplier and multiplicand are in range */
+    /* check if negative and store the sign bit */
+    
+    LDR R5, =a_Sign
+    LDR R6, =b_Sign
+    
+    LSRS R2, R0, 15
+    STR R2, [R5]
+    LSLS R3, R2, 1
+    LSRS R4, R3, 15
+    CMP R4, 0
+    BNE out_of_range
+   
+    LSRS R2, R1, 15
+    STR R2, [R6]
+    LSLS R3, R2, 1
+    LSRS R4, R3, 15
+    CMP R4, 0
+    BNE out_of_range
+   
+   /* see if product will be negative or positive */
+   
+    LDR R4, =prod_Is_Neg
+   
+    CMP R5, R6
+    BEQ same_sign
+   
+    MOV R1, 1
+    B store_prod_neg
+   
+same_sign:
+    CMP R5, 0
+    BEQ zero_mult
+    CMP R6, 0
+    BEQ zero_mult
+   
+    MOV R4, 0
+    B store_prod_neg
+   
+zero_mult:
+    MOV R4, 0
+   
+store_prod_neg:
+    STR R4, [R9]
+   
+    LDR R0, =a_Multiplicand
+    LDR R1, [R0]             
+    MOVS R2, R1, LSR 15     
+    LSLS R1, R1, 1          
+    SUBS R1, R1, R2          
+    STR R1, [R7]            
+
+    LDR R0, =b_Multiplier
+    LDR R1, [R0]             
+    MOVS R2, R1, LSR 15     
+    LSLS R1, R1, 1          
+    SUBS R1, R1, R2          
+    STR R1, [R3]             
+
+    
+    MOV R4, 0              
+    LDR R5, =a_Abs
+    LDR R6, =b_Abs
+
+multiply_loop:
+    LSRS R7, R6, 1         
+    BEQ multiply_skip        
+    ADDS R4, R4, R5         
+multiply_skip:
+    LSRS R6, R6, 1          
+    LSLS R5, R5, 1         
+    BNE multiply_loop        
+
+   
+    LDR R0, =init_Product
+    STR R4, [R0]             
+
+
+    LDR R0, =prod_Is_Neg
+    LDR R1, [R0]             
+    CMP R1, 1               
+    BEQ negate_product       
+
+    
+    B done
+
+negate_product:
+    RSBS R4, R4, 0         
+    STR R4, [R0]             
+    B done
+
+    
+out_of_range: 
+    LDR R5, =rng_Error
+    MOV R3, 1
+    STR R3, [R0]
+    MOV R0, 0
+    B done
     
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
